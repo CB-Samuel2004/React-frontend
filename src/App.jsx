@@ -1,34 +1,34 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from "./pages/Home.tsx";
-import Login from "./pages/Login.tsx";
-import Signup from "./pages/Signup.tsx";
-import Contact from "./pages/Contact.tsx";
-import Layout from "./pages/Layout.tsx";
-import NoPage from "./pages/NoPage.tsx";
-import Cart from "./pages/Cart.tsx"
-import Store from "./pages/Store.tsx"
-import ProductDetails from "./pages/ProductDetails.tsx";
-import Wish from './toggler items/Wish.tsx';
-import Profile from "./toggler items/Profile.tsx";
-import Orders from "./toggler items/Orders.tsx";
-import BestSeller from "./toggler items/BestSeller.tsx";
-import Sell from "./toggler items/Sell.tsx";
-import Review from "./toggler items/Review.tsx";
-import Aboutus from "./toggler items/Aboutus.tsx";
-import Footer from "./Footer/Footer.tsx";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import Contact from "./pages/Contact.jsx";
+import Layout from "./pages/Layout.jsx";
+import NoPage from "./pages/NoPage.jsx";
+import Cart from "./pages/Cart.jsx";
+import Store from "./pages/Store.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
+import Wish from "./toggler items/Wish.jsx";
+import Profile from "./toggler items/Profile.jsx";
+import Orders from "./toggler items/Orders.jsx";
+import BestSeller from "./toggler items/BestSeller.jsx";
+import Sell from "./toggler items/Sell.jsx";
+import Review from "./toggler items/Review.jsx";
+import Aboutus from "./toggler items/Aboutus.jsx";
+import Footer from "./Footer/Footer.jsx";
 
-
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
       {/* Main Container to ensure footer stays at the bottom */}
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        
+      <div
+        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
         {/* Content Area */}
         <div style={{ flexGrow: 1 }}>
           <Routes>
-            <Route path="/" element={<Layout />}> 
+            <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="Orders" element={<Orders />} />
               <Route path="BestSeller" element={<BestSeller />} />

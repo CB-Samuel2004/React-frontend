@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Button, 
-  Box, 
+import {
+  Button,
+  Box,
   Typography,
   Grid,
   Card,
@@ -10,7 +10,7 @@ import {
   CardMedia,
   Container,
   Snackbar,
-  IconButton 
+  IconButton,
 } from "@mui/material";
 import { Favorite } from "@mui/icons-material";
 
@@ -33,32 +33,17 @@ import t2 from "../images/t/l2/1.jpg";
 import a1 from "../images/a/l1/1.jpg";
 import a2 from "../images/a/l2/1.jpg";
 
-// Define interfaces
-interface ProductItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string[];  // Changed from string to string[] to match ProductDetails
-  specifications?: string;
-}
-
-interface Slide {
-  title?: string;
-  subtitle?: string;
-  image: string;
-}
-
-const Home: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [cart, setCart] = useState<ProductItem[]>([]);
-  const [wishlist, setWishlist] = useState<ProductItem[]>([]);
+const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
-  const laptopsRef = useRef<HTMLDivElement>(null);
-  const mobilesRef = useRef<HTMLDivElement>(null);
-  const tabletsRef = useRef<HTMLDivElement>(null);
-  const accessoriesRef = useRef<HTMLDivElement>(null);
+  const laptopsRef = useRef(null);
+  const mobilesRef = useRef(null);
+  const tabletsRef = useRef(null);
+  const accessoriesRef = useRef(null);
 
   // Products data - updated to use image arrays
   const products = {
@@ -67,62 +52,68 @@ const Home: React.FC = () => {
         id: 1,
         title: "Dell [Smartchoice] Core i3-1215U, 12th Gen",
         price: "₹34,990",
-        image: [l1],  // Now using array
+        image: [l1],
         specifications: "8GB RAM / 512GB SSD / FHD / Windows 11",
       },
       {
         id: 2,
         title: "Acer ALG Gaming Laptop 13th Gen Intel Core i7",
         price: "₹69,990",
-        image: [l2],  // Now using array
-        specifications: "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        image: [l2],
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
       },
       {
         id: 9,
         title: "Samsung Galaxy S23 Ultra 5G",
         price: "₹72,999",
-        specifications: "Samsung Galaxy S23 Ultra 5G AI Smartphone (Green, 12GB, 256GB Storage)",
-        image: [m1],  // Now using array
+        specifications:
+          "Samsung Galaxy S23 Ultra 5G AI Smartphone (Green, 12GB, 256GB Storage)",
+        image: [m1],
       },
       {
         id: 10,
         title: "Redmi Note 13 5G",
         price: "₹15,175",
         specifications: "(Chromatic Purple, 8GB RAM, 256GB Storage)",
-        image: [m2],  // Now using array
+        image: [m2],
       },
       {
         id: 17,
         title: "HONOR Pad 9",
         price: "₹22,999",
-        specifications: "12.1-Inch 2.5K Display, 8GB, 256GB Storage, Snapdragon 6 Gen 1",
-        image: [t1],  // Now using array
+        specifications:
+          "12.1-Inch 2.5K Display, 8GB, 256GB Storage, Snapdragon 6 Gen 1",
+        image: [t1],
       },
       {
         id: 18,
         title: "OnePlus Pad Go",
         price: "₹21,998",
-        specifications: "Dolby Atmos Quad Speakers, 4G LTE(Calling) , 8GB RAM 128 GB",
-        image: [t2],  // Now using array
+        specifications:
+          "Dolby Atmos Quad Speakers, 4G LTE(Calling) , 8GB RAM 128 GB",
+        image: [t2],
       },
       {
         id: 25,
         title: "boAt Airdopes 191",
         price: "₹1,499",
-        specifications: "32dB ANC, Ambient Mode, 60HRS Battery, 4Mics ENx, in-Ear Detection,Fast Charge",
-        image: [a1],  // Now using array
+        specifications:
+          "32dB ANC, Ambient Mode, 60HRS Battery, 4Mics ENx, in-Ear Detection,Fast Charge",
+        image: [a1],
       },
       {
         id: 26,
         title: "Noise Newly Launched Air Clips",
         price: "₹2,999",
-        specifications: "Wireless Open Ear Earbuds with Chrome Finish, AirWave™ Technology",
-        image: [a2],  // Now using array
-      }
-    ]
+        specifications:
+          "Wireless Open Ear Earbuds with Chrome Finish, AirWave™ Technology",
+        image: [a2],
+      },
+    ],
   };
 
-  const slides: Slide[] = [
+  const slides = [
     {
       title: "Welcome to TechTrove",
       subtitle: "Start your tech journey by buying our best products",
@@ -152,7 +143,7 @@ const Home: React.FC = () => {
     }
   }, [cart]);
 
-  const handleAddToCart = (product: ProductItem) => {
+  const handleAddToCart = (product) => {
     if (!cart.some((item) => item.id === product.id)) {
       const updatedCart = [...cart, product];
       setCart(updatedCart);
@@ -160,7 +151,7 @@ const Home: React.FC = () => {
     setSnackbarOpen(true);
   };
 
-  const toggleWishlist = (product: ProductItem) => {
+  const toggleWishlist = (product) => {
     if (wishlist.some((item) => item.id === product.id)) {
       setWishlist(wishlist.filter((item) => item.id !== product.id));
     } else {
@@ -168,7 +159,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleProductClick = (product: ProductItem) => {
+  const handleProductClick = (product) => {
     navigate(`/product/${product.id}`, { state: { product } });
   };
 
@@ -180,7 +171,7 @@ const Home: React.FC = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const goToSlide = (index: number) => {
+  const goToSlide = (index) => {
     setCurrentSlide(index);
   };
 
@@ -188,19 +179,23 @@ const Home: React.FC = () => {
     navigate("/store");
   };
 
-  const renderCategory = (title: string, productList: ProductItem[]) => (
+  const renderCategory = (title, productList) => (
     <Box sx={{ mt: 10 }}>
       {title && (
-        <Typography variant="h5" gutterBottom sx={{ textAlign: "left", mb: 5, fontSize: "2.5rem" }}>
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ textAlign: "left", mb: 5, fontSize: "2.5rem" }}
+        >
           {title}
         </Typography>
       )}
       <Grid container spacing={4}>
         {productList.map((product) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-            <Card 
-              sx={{ 
-                position: "relative", 
+            <Card
+              sx={{
+                position: "relative",
                 boxShadow: "0 4px 6px rgba(9, 0, 0, 0.97)",
                 height: "450px",
                 display: "flex",
@@ -232,24 +227,26 @@ const Home: React.FC = () => {
                 height="200"
                 image={product.image[0]} // Using first image in array
                 onClick={() => handleProductClick(product)}
-                sx={{ 
+                sx={{
                   cursor: "pointer",
                   objectFit: "contain",
                   padding: "16px",
                   backgroundColor: "white",
                 }}
               />
-              <CardContent sx={{ 
-                flexGrow: 1, 
-                display: "flex", 
-                flexDirection: "column",
-                justifyContent: "space-between",
-                height: "250px"
-              }}>
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "250px",
+                }}
+              >
                 <Box>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
+                  <Typography
+                    variant="h6"
+                    sx={{
                       color: "white",
                       fontSize: "1rem",
                       fontWeight: "bold",
@@ -258,33 +255,33 @@ const Home: React.FC = () => {
                       overflow: "hidden",
                       display: "-webkit-box",
                       WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical"
+                      WebkitBoxOrient: "vertical",
                     }}
                   >
                     {product.title}
                   </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
+                  <Typography
+                    variant="body2"
+                    sx={{
                       color: "rgba(255, 255, 255, 0.7)",
                       height: "60px",
                       overflow: "hidden",
                       display: "-webkit-box",
                       WebkitLineClamp: 3,
-                      WebkitBoxOrient: "vertical"
+                      WebkitBoxOrient: "vertical",
                     }}
                   >
                     {product.specifications || ""}
                   </Typography>
                 </Box>
                 <Box>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
+                  <Typography
+                    variant="body2"
+                    sx={{
                       color: "white",
                       fontSize: "1.1rem",
                       fontWeight: "bold",
-                      mb: 2 
+                      mb: 2,
                     }}
                   >
                     {product.price}
@@ -360,11 +357,24 @@ const Home: React.FC = () => {
             position: "relative",
           }}
         >
-          <Box sx={{ textAlign: "center", color: "white", textShadow: "0px 2px 5px rgba(0, 0, 0, 0.7)", position: "relative" }}>
-            <Typography variant="h1" sx={{ fontSize: "3rem", margin: 0, marginTop: "30px" }}>
+          <Box
+            sx={{
+              textAlign: "center",
+              color: "white",
+              textShadow: "0px 2px 5px rgba(0, 0, 0, 0.7)",
+              position: "relative",
+            }}
+          >
+            <Typography
+              variant="h1"
+              sx={{ fontSize: "3rem", margin: 0, marginTop: "30px" }}
+            >
               {slides[currentSlide].title}
             </Typography>
-            <Typography variant="body1" sx={{ fontSize: "1rem", marginTop: "8px" }}>
+            <Typography
+              variant="body1"
+              sx={{ fontSize: "1rem", marginTop: "8px" }}
+            >
               {slides[currentSlide].subtitle}
             </Typography>
             {currentSlide === 0 && (
@@ -417,14 +427,23 @@ const Home: React.FC = () => {
         </Button>
 
         {/* Slide Indicators */}
-        <Box sx={{ display: "flex", justifyContent: "center", position: "absolute", bottom: "1rem", width: "100%" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            position: "absolute",
+            bottom: "1rem",
+            width: "100%",
+          }}
+        >
           {slides.map((_, index) => (
             <Box
               key={index}
               sx={{
                 width: "30px",
                 height: "4px",
-                background: index === currentSlide ? "white" : "rgba(255, 255, 255, 0.5)",
+                background:
+                  index === currentSlide ? "white" : "rgba(255, 255, 255, 0.5)",
                 margin: "0 5px",
                 transition: "background 0.3s",
                 cursor: "pointer",
@@ -451,18 +470,34 @@ const Home: React.FC = () => {
       />
 
       {/* Category Cards Section */}
-      <Box sx={{ padding: "40px 20px", backgroundColor: "#f4f4f4", textAlign: "center" }}>
-        <Typography variant="h2" sx={{ fontSize: "2.5rem", color: "#333", marginBottom: "30px" }}>
+      <Box
+        sx={{
+          padding: "40px 20px",
+          backgroundColor: "#f4f4f4",
+          textAlign: "center",
+        }}
+      >
+        <Typography
+          variant="h2"
+          sx={{ fontSize: "2.5rem", color: "#333", marginBottom: "30px" }}
+        >
           Our Categories
         </Typography>
 
-        <Box sx={{ display: "flex", justifyContent: "center", gap: "30px", flexWrap: "wrap" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "30px",
+            flexWrap: "wrap",
+          }}
+        >
           {/* Category Cards */}
           {[
             { title: "Laptop", image: l, section: "laptops" },
             { title: "Mobile", image: m, section: "mobiles" },
             { title: "Tablet", image: t, section: "tablets" },
-            { title: "Accessories", image: a, section: "accessories" }
+            { title: "Accessories", image: a, section: "accessories" },
           ].map((category) => (
             <Box
               key={category.title}
@@ -504,7 +539,8 @@ const Home: React.FC = () => {
                   color: "white",
                   marginBottom: "20px",
                   marginTop: "10px",
-                }}>
+                }}
+              >
                 {category.title}
               </Typography>
               <Button
@@ -538,7 +574,13 @@ const Home: React.FC = () => {
       <Box sx={{ pt: 5, textAlign: "center" }}>
         <Container>
           {/* TechTrove Best Seller Header */}
-          <Container sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Container
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Box
               sx={{
                 background: "white",
@@ -573,7 +615,6 @@ const Home: React.FC = () => {
 
           {/* Render all categories */}
           {renderCategory(null, products.laptops)}
-         
         </Container>
       </Box>
 

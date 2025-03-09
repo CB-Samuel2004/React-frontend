@@ -12,16 +12,78 @@ import Fade from "@mui/material/Fade";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarIcon from "@mui/icons-material/Star";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
 import l5 from "../images/rev.png";
 
+// Sub-components for Reviews Section and Review Card
+const ReviewCard = ({ name, date, rating, review }) => {
+  const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+      color: "red",
+    },
+    "& .MuiRating-iconHover": {
+      color: "red",
+    },
+    "& .MuiRating-root": {
+      marginBottom: -6,
+    },
+  });
+
+  return (
+    <Card
+      sx={{
+        backgroundColor: "black",
+        color: "white",
+        boxShadow: "0 4px 8px gold",
+        width: "100%",
+        margin: "1px",
+        paddingBottom: "0px",
+        marginTop: "13px",
+      }}
+    >
+      <CardContent>
+        <Typography variant="h6">{name}</Typography>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ fontSize: "0.875rem", marginBottom: 0.5 }}
+        >
+          {date}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "right" }}>
+          {[...Array(5)].map((_, index) => (
+            <StarIcon
+              key={index}
+              sx={{ color: index < rating ? "gold" : "gray", marginRight: 0.5 }}
+            />
+          ))}
+        </Box>
+        <Typography variant="body2" sx={{ marginTop: 1, marginBottom: 1 }}>
+          {review}
+        </Typography>
+        <Box sx={{ "& > legend": { mb: 0 } }}>
+          <StyledRating
+            sx={{ marginBottom: 0, paddingBottom: 0 }}
+            name="customized-color"
+            defaultValue={0}
+            max={1}
+            precision={1}
+            icon={<FavoriteIcon fontSize="inherit" />}
+            emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+          />
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
+
 // First Card: Customer Reviews Overview
-const ReviewsPage: React.FC = () => {
-  const [value, setValue] = useState<number | null>(0);
-  const [reviewText, setReviewText] = useState<string>("");
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+const ReviewsPage = () => {
+  const [value, setValue] = useState(0);
+  const [reviewText, setReviewText] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -43,7 +105,7 @@ const ReviewsPage: React.FC = () => {
       borderRadius: "8px",
     },
     heading: {
-      textAlign: "center" as const,
+      textAlign: "center",
       marginBottom: "20px",
       color: "white",
     },
@@ -95,17 +157,35 @@ const ReviewsPage: React.FC = () => {
       >
         <CardContent>
           <h2 style={styles.heading}>Customer Reviews</h2>
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "20px",
+            }}
+          >
             <div style={{ textAlign: "center" }}>
               <h1 style={{ fontSize: "3rem", margin: "0" }}>
                 4.5<span style={{ fontSize: "1.5rem", color: "#666" }}>/5</span>
               </h1>
-              <div style={{ color: "#f4c542", fontSize: "1.5rem" }}>⭐⭐⭐⭐⭐</div>
-              <p style={{ fontSize: "0.9rem", color: "white" }}>Average Rating and percentage per views</p>
+              <div style={{ color: "#f4c542", fontSize: "1.5rem" }}>
+                ⭐⭐⭐⭐⭐
+              </div>
+              <p style={{ fontSize: "0.9rem", color: "white" }}>
+                Average Rating and percentage per views
+              </p>
             </div>
             <div style={{ width: "60%" }}>
               {[91, 75, 45, 25, 14].map((percent, index) => (
-                <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                >
                   <div
                     style={{
                       width: "100%",
@@ -116,9 +196,18 @@ const ReviewsPage: React.FC = () => {
                       marginRight: "10px",
                     }}
                   >
-                    <div style={{ height: "100%", backgroundColor: "gold", borderRadius: "4px", width: `${percent}%` }}></div>
+                    <div
+                      style={{
+                        height: "100%",
+                        backgroundColor: "gold",
+                        borderRadius: "4px",
+                        width: `${percent}%`,
+                      }}
+                    ></div>
                   </div>
-                  <span style={{ fontSize: "0.9rem", color: "silver" }}>{percent}%</span>
+                  <span style={{ fontSize: "0.9rem", color: "silver" }}>
+                    {percent}%
+                  </span>
                 </div>
               ))}
             </div>
@@ -139,7 +228,11 @@ const ReviewsPage: React.FC = () => {
           margin: "0", // Remove margin if you want it to touch the sides of the page
         }}
       >
-        <Typography variant="h4" align="center" sx={{ marginBottom: 4, color: "white" }}>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ marginBottom: 4, color: "white" }}
+        >
           Reviews
         </Typography>
 
@@ -185,7 +278,13 @@ const ReviewsPage: React.FC = () => {
                   display: isExpanded ? "block" : "none", // Hide text field until expanded
                 }}
               />
-              <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
                 <Button
                   sx={{
                     padding: "0.8rem 2rem",
@@ -216,7 +315,7 @@ const ReviewsPage: React.FC = () => {
 
         {/* Success Alert */}
         {isSubmitted && (
-          <Stack sx={{ width: '100%' }} spacing={2}>
+          <Stack sx={{ width: "100%" }} spacing={2}>
             <Alert severity="success">
               <AlertTitle>Success</AlertTitle>
               Thanks for your feedback.
@@ -225,7 +324,11 @@ const ReviewsPage: React.FC = () => {
         )}
 
         {/* Top Reviews Section */}
-        <Typography variant="h4" align="center" sx={{ margin: 6, paddingTop: 3, color: "white" }}>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{ margin: 6, paddingTop: 3, color: "white" }}
+        >
           Top reviews
         </Typography>
         <ReviewCard
@@ -248,7 +351,15 @@ const ReviewsPage: React.FC = () => {
         />
 
         {/* View More and Loading Indicator */}
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 2,
+          }}
+        >
           <Fade
             in={loading}
             style={{
@@ -258,67 +369,15 @@ const ReviewsPage: React.FC = () => {
           >
             <CircularProgress />
           </Fade>
-          <Button onClick={handleClickLoading} sx={{ m: 2, color: "white", backgroundColor: "black" }}>
+          <Button
+            onClick={handleClickLoading}
+            sx={{ m: 2, color: "white", backgroundColor: "black" }}
+          >
             {loading ? "Stop loading" : "View more"}
           </Button>
         </Box>
       </Card>
     </div>
-  );
-};
-
-// Sub-components for Reviews Section and Review Card
-const ReviewCard = ({ name, date, rating, review }: { name: string; date: string; rating: number; review: string }) => {
-  const StyledRating = styled(Rating)({
-    "& .MuiRating-iconFilled": {
-      color: "red",
-    },
-    "& .MuiRating-iconHover": {
-      color: "red",
-    },
-    "& .MuiRating-root": {
-      marginBottom: -6,
-    },
-  });
-
-  return (
-    <Card
-      sx={{
-        backgroundColor: "black",
-        color: "white",
-        boxShadow: "0 4px 8px gold",
-        width: "100%",
-        margin: "1px",
-        paddingBottom: "0px",
-        marginTop: "13px",
-      }}
-    >
-      <CardContent>
-        <Typography variant="h6">{name}</Typography>
-        <Typography variant="body2" color="textSecondary" sx={{ fontSize: "0.875rem", marginBottom: 0.5 }}>
-          {date}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "right" }}>
-          {[...Array(5)].map((_, index) => (
-            <StarIcon key={index} sx={{ color: index < rating ? "gold" : "gray", marginRight: 0.5 }} />
-          ))}
-        </Box>
-        <Typography variant="body2" sx={{ marginTop: 1, marginBottom: 1 }}>
-          {review}
-        </Typography>
-        <Box sx={{ "& > legend": { mb: 0 } }}>
-          <StyledRating
-            sx={{ marginBottom: 0, paddingBottom: 0 }}
-            name="customized-color"
-            defaultValue={0}
-            max={1}
-            precision={1}
-            icon={<FavoriteIcon fontSize="inherit" />}
-            emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-          />
-        </Box>
-      </CardContent>
-    </Card>
   );
 };
 

@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -49,16 +51,13 @@ import l81 from "../images/l/l8/1.jpg";
 import l82 from "../images/l/l8/2.jpg";
 import l83 from "../images/l/l8/3.jpg";
 
-
 import m11 from "../images/m/l1/1.jpg";
 import m12 from "../images/m/l1/2.jpg";
 import m13 from "../images/m/l1/3.jpg";
 
-
 import m21 from "../images/m/l2/1.jpg";
 import m22 from "../images/m/l2/2.jpg";
 import m23 from "../images/m/l2/3.jpg";
-
 
 import m31 from "../images/m/l3/1.jpg";
 import m32 from "../images/m/l3/2.jpg";
@@ -83,7 +82,6 @@ import m73 from "../images/m/l7/3.jpg";
 import m81 from "../images/m/l8/1.jpg";
 import m82 from "../images/m/l8/2.jpg";
 import m83 from "../images/m/l8/3.jpg";
-
 
 import t11 from "../images/t/l1/1.jpg";
 import t12 from "../images/t/l1/2.jpg";
@@ -117,7 +115,6 @@ import t81 from "../images/t/l8/1.jpg";
 import t82 from "../images/t/l8/2.jpg";
 import t83 from "../images/t/l8/3.jpg";
 
-
 import a11 from "../images/a/l1/1.jpg";
 import a12 from "../images/a/l1/2.jpg";
 import a13 from "../images/a/l1/3.jpg";
@@ -150,29 +147,18 @@ import a81 from "../images/a/l8/1.jpg";
 import a82 from "../images/a/l8/2.jpg";
 import a83 from "../images/a/l8/3.jpg";
 
-
-
-interface ProductItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string[];  // Always use string array for consistency
-  specifications?: string;
-  longSpecifications?: string;
-}
-
-const Store: React.FC = () => {
-  const [cart, setCart] = useState<ProductItem[]>([]);
-  const [wishlist, setWishlist] = useState<ProductItem[]>([]);
+const Store = () => {
+  const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const laptopsRef = useRef<HTMLDivElement>(null);
-  const mobilesRef = useRef<HTMLDivElement>(null);
-  const tabletsRef = useRef<HTMLDivElement>(null);
-  const accessoriesRef = useRef<HTMLDivElement>(null);
+  const laptopsRef = useRef(null);
+  const mobilesRef = useRef(null);
+  const tabletsRef = useRef(null);
+  const accessoriesRef = useRef(null);
 
   useEffect(() => {
      const savedCart = localStorage.getItem("cart");
@@ -192,6 +178,7 @@ const Store: React.FC = () => {
        localStorage.setItem("cart", JSON.stringify(cart));
      }
    }, [cart]);
+   
    useEffect(() => {
        const section = new URLSearchParams(location.search).get("section");
        const refs = {
@@ -201,93 +188,61 @@ const Store: React.FC = () => {
          accessories: accessoriesRef,
        };
        
-       const targetRef = section && refs[section as keyof typeof refs];
+       const targetRef = section && refs[section];
        if (targetRef?.current) {
          targetRef.current.scrollIntoView({ behavior: "smooth" });
        }
      }, [location]);
 
-  const handleAddToCart = (product: ProductItem) => {
+  const handleAddToCart = (product) => {
     if (!cart.some((item) => item.id === product.id)) {
       const updatedCart = [...cart, product];
       setCart([...cart, {
         ...product,
         image: product.image  // Already storing keys, not actual images
-      }]);    }
+      }]);    
+    }
     setSnackbarOpen(true);
   };
-  const toggleWishlist = (product: ProductItem) => {
+  
+  const toggleWishlist = (product) => {
     setWishlist(prev => 
       prev.some((item) => item.id === product.id)
         ? prev.filter((item) => item.id !== product.id)
         : [...prev, {
           ...product,
           image: product.image  // Already storing keys, not actual images
-        }]    );
+        }]    
+    );
   };
 
-  // const toggleWishlist = (product: ProductItem) => {
-  //   if (wishlist.some((item) => item.id === product.id)) {
-  //     setWishlist(wishlist.filter((item) => item.id !== product.id));
-  //   } else {
-  //     setWishlist([...wishlist, product]);
-  //   }
-  // };
-
-  // const handleProductClick = (product: ProductItem) => {
-  //   navigate(`/product/${product.id}`, {
-  //     state: {
-  //       product: {
-  //         ...product,
-  //         image: product.image.slice(3), // Pass additional images for product detail
-  //       },
-  //     },
-  //   });
-  // };
-  const handleProductClick = (product: ProductItem) => {
+  const handleProductClick = (product) => {
     navigate(`/product/${product.id}`, {
       state: { product }
     });
   };
 
-//   const location = useLocation();
-
-// useEffect(() => {
-//     const section = new URLSearchParams(location.search).get("section");
-
-//     if (section === "laptops" && laptopsRef.current) {
-//       laptopsRef.current.scrollIntoView({ behavior: "smooth" });
-//     } else if (section === "mobiles" && mobilesRef.current) {
-//       mobilesRef.current.scrollIntoView({ behavior: "smooth" });
-//     } else if (section === "tablets" && tabletsRef.current) {
-//       tabletsRef.current.scrollIntoView({ behavior: "smooth" });
-//     } else if (section === "accessories" && accessoriesRef.current) {
-//       accessoriesRef.current.scrollIntoView({ behavior: "smooth" });
-//     }
-//   }, [location]);
-
-
   const products = {
     laptops: [
       {
-              id: 1,
-              title: "Dell [Smartchoice] Core i3-1215U, 12th Gen",
-              price: "₹34,990",
-              image: [l11, l12, l13],
-              specifications: "8GB RAM / 512GB SSD / FHD / Windows 11",
-              longSpecifications:
-                "12th Gen Intel Core i3-1215U Processor, Full HD Display, Backlit Keyboard, Windows 11 Pro, WiFi 6",
-            },
+        id: 1,
+        title: "Dell [Smartchoice] Core i3-1215U, 12th Gen",
+        price: "₹34,990",
+        image: [l11, l12, l13],
+        specifications: "8GB RAM / 512GB SSD / FHD / Windows 11",
+        longSpecifications:
+          "12th Gen Intel Core i3-1215U Processor, Full HD Display, Backlit Keyboard, Windows 11 Pro, WiFi 6",
+      },
       {
         id: 2,
         title: "Acer ALG Gaming Laptop 13th Gen Intel Core i7",
         price: "₹69,990",
         image: [l21, l22, l23],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-             },
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
+      },
       {
         id: 3,
         title: "Lenovo V14 G3 (2024), Intel Core i5 12th Gen",
@@ -297,7 +252,8 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-      },{
+      },
+      {
         id: 4,
         title: "HP 15 Intel Core i5 13th Gen",
         price: "₹69,990",
@@ -306,7 +262,8 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-      },{
+      },
+      {
         id: 5,
         title: "Apple MacBook Air Laptop",
         price: "₹69,990",
@@ -315,7 +272,8 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-      },{
+      },
+      {
         id: 6,
         title: "Lenovo IdeaPad Slim 3 13th Gen ",
         price: "₹69,990",
@@ -324,7 +282,8 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-      },{
+      },
+      {
         id: 7,
         title: "Dell {Smartchoice} G15-5530 Core i5-13450HX",
         price: "₹75,990",
@@ -333,7 +292,8 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-      },{
+      },
+      {
         id: 8,
         title: "ASUS ROG Strix Scar 16 (2024), Intel Core™ i9",
         price: "₹3,39,990",
@@ -350,52 +310,50 @@ const Store: React.FC = () => {
         title: "Samsung Galaxy S23 Ultra 5G",
         price: "₹72,999",
         image:[m11, m12, m13],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-           },
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
+      },
       {
         id: 10,
         title: "Redmi Note 13 5G",
         price: " ₹15,175",
         image:[m21, m22, m23],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
- },
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
+      },
       {
         id: 11,
         title: "Motorola Edge 50 Fusion 5G ",
         price: " ₹26,428",
         image:[m31, m32, m33],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
       },
       {
         id: 12,
         title: "Nothing Phone (2a) Plus",
         price: "34,428",
         image:[m41, m42, m43],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
       },
       {
         id: 13,
         title: "iQOO Z7 Pro 5G",
         price: "₹18,999",
         image:[m51, m52, m53],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
       },
       {
         id: 14,
@@ -406,29 +364,26 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 15,
         title: "iQOO Z9s 5G",
         price: " ₹19,999",
         image:[m71, m72, m73],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
       },
       {
         id: 16,
         title: "iPhone 16 Pro",
         price: "₹1,16,900",
         image:[m81, m82, m83],
-               specifications:
-                 "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
-               longSpecifications:
-                 "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
+        specifications:
+          "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
+        longSpecifications:
+          "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
       },
     ],
     tablets: [
@@ -441,7 +396,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 18,
@@ -452,7 +406,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 19,
@@ -463,7 +416,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 20,
@@ -474,7 +426,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 21,
@@ -485,7 +436,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 22,
@@ -496,7 +446,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 23,
@@ -507,7 +456,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 24,
@@ -518,7 +466,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
     ],
     accessories: [
@@ -531,7 +478,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 26,
@@ -542,7 +488,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 27,
@@ -553,7 +498,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 28,
@@ -564,7 +508,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 29,
@@ -575,7 +518,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 30,
@@ -586,7 +528,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 31,
@@ -597,7 +538,6 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
       {
         id: 32,
@@ -608,13 +548,11 @@ const Store: React.FC = () => {
           "16GB DDR4 / 512GB SSD / 6GB RTX3050 Graphics / 144Hz / Win11Home",
         longSpecifications:
           "Gaming laptop with 16GB DDR4 RAM, 512GB SSD, 144Hz display, and RTX3050 Graphics for seamless gaming.",
-
       },
     ],
   };
   
-
-  const filterProducts = (productList: ProductItem[]) => {
+  const filterProducts = (productList) => {
     return productList.filter(product =>
       product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.specifications?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -622,9 +560,9 @@ const Store: React.FC = () => {
   };
 
   const renderCategory = (
-    title: string,
-    productList: ProductItem[],
-    ref: React.RefObject<HTMLDivElement>
+    title,
+    productList,
+    ref
   ) => {
     const filteredProducts = filterProducts(productList);
 
@@ -638,23 +576,22 @@ const Store: React.FC = () => {
         <Grid container spacing={4}>
           {filteredProducts.map((product) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-<Card 
-              sx={{ 
-                position: "relative", 
-                boxShadow: "0 4px 6px rgba(9, 0, 0, 0.97)",
-                height: "450px",
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: "black",
-                color: "white",
-                transition: "transform 0.3s ease",
-                "&:hover": {
-                  transform: "translateY(-5px)",
-                },
-              }}
-            >                
-            <IconButton
-                  // onClick={() => toggleWishlist(product)}
+              <Card 
+                sx={{ 
+                  position: "relative", 
+                  boxShadow: "0 4px 6px rgba(9, 0, 0, 0.97)",
+                  height: "450px",
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "black",
+                  color: "white",
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                  },
+                }}
+              >                
+                <IconButton
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleWishlist(product);
@@ -681,78 +618,78 @@ const Store: React.FC = () => {
                     objectFit: "contain",
                     padding: "16px",
                     backgroundColor: "white",
-                  }}                />
+                  }}
+                />
                 <CardContent sx={{ 
-                                flexGrow: 1, 
-                                display: "flex", 
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                height: "250px"
-                              }}>
-                                <Box>
-                                  <Typography 
-                                    variant="h6" 
-                                    sx={{ 
-                                      color: "white",
-                                      fontSize: "1rem",
-                                      fontWeight: "bold",
-                                      mb: 1,
-                                      height: "48px",
-                                      overflow: "hidden",
-                                      display: "-webkit-box",
-                                      WebkitLineClamp: 2,
-                                      WebkitBoxOrient: "vertical"
-                                    }}
-                                  >
-                                    {product.title}
-                                  </Typography>
-                                  <Typography 
-                                    variant="body2" 
-                                    sx={{ 
-                                      color: "rgba(255, 255, 255, 0.7)",
-                                      height: "60px",
-                                      overflow: "hidden",
-                                      display: "-webkit-box",
-                                      WebkitLineClamp: 3,
-                                      WebkitBoxOrient: "vertical"
-                                    }}
-                                  >
-                                    {product.specifications || ""}
-                                  </Typography>
-                                </Box>
-                                <Box>
-                                  <Typography 
-                                    variant="body2" 
-                                    sx={{ 
-                                      color: "white",
-                                      fontSize: "1.1rem",
-                                      fontWeight: "bold",
-                                      mb: 2 
-                                    }}
-                                  >
-                                    {product.price}
-                                  </Typography>
-                                  <Button
-                                    variant="contained"
-                                    // onClick={() => handleAddToCart(product)}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleAddToCart(product);
-                                    }}
-                                    fullWidth
-                                    sx={{
-                                      backgroundColor: "white",
-                                      color: "black",
-                                      "&:hover": {
-                                        backgroundColor: "rgba(255, 255, 255, 0.8)",
-                                      },
-                                    }}
-                                  >
-                                    Add to Cart
-                                  </Button>
-                                </Box>
-                              </CardContent>
-              </Card>
+                  flexGrow: 1, 
+                  display: "flex", 
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "250px"
+                }}>
+                  <Box>
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        color: "white",
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                        mb: 1,
+                        height: "48px",
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical"
+                      }}
+                    >
+                      {product.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: "rgba(255, 255, 255, 0.7)",
+                        height: "60px",
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical"
+                      }}
+                    >
+                      {product.specifications || ""}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: "white",
+                        fontSize: "1.1rem",
+                        fontWeight: "bold",
+                        mb: 2 
+                      }}
+                    >
+                      {product.price}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
+                      fullWidth
+                      sx={{
+                        backgroundColor: "white",
+                        color: "black",
+                        "&:hover": {
+                          backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        },
+                      }}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Box>
+                </CardContent>
+             </Card>
             </Grid>
           ))}
         </Grid>
@@ -779,12 +716,11 @@ const Store: React.FC = () => {
         />
       </Container>
       <Container>
-      {renderCategory("Laptops", products.laptops, laptopsRef)}
-{renderCategory("Mobiles", products.mobiles, mobilesRef)}
-{renderCategory("Tablets", products.tablets, tabletsRef)}
-{renderCategory("Accessories", products.accessories, accessoriesRef)}
- 
- </Container>
+        {renderCategory("Laptops", products.laptops, laptopsRef)}
+        {renderCategory("Mobiles", products.mobiles, mobilesRef)}
+        {renderCategory("Tablets", products.tablets, tabletsRef)}
+        {renderCategory("Accessories", products.accessories, accessoriesRef)}
+      </Container>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}

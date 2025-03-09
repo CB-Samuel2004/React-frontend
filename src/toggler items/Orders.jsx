@@ -19,21 +19,14 @@ import m1 from "../images/m/l1/1.jpg";
 import m2 from "../images/m/l2/1.jpg";
 import m3 from "../images/m/l3/1.jpg";
 
-interface Order {
-  id: string;
-  date: string;
-  total: string;
-  image: string; // Add an image property
-}
-
-const OrderHistory: React.FC = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [activeOrder, setActiveOrder] = useState<Order | null>(null);
+const OrderHistory = () => {
+  const [orders, setOrders] = useState([]);
+  const [activeOrder, setActiveOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Simulated fetch orders (replace with real API call)
   useEffect(() => {
-    const mockOrders: Order[] = [
+    const mockOrders = [
       { id: "12345", date: "Dec 1, 2024", total: "₹15,000", image: m1 },
       { id: "12346", date: "Nov 15, 2024", total: "₹69,990", image: m2 },
       { id: "12347", date: "Oct 30, 2024", total: "₹26,428", image: m3 },
@@ -45,15 +38,15 @@ const OrderHistory: React.FC = () => {
     }, 2000);
   }, []);
 
-  const toggleOrderDetails = (order: Order) => {
+  const toggleOrderDetails = (order) => {
     setActiveOrder((prevOrder) => (prevOrder?.id === order.id ? null : order));
   };
 
-  const handleDownload = (order: Order) => {
+  const handleDownload = (order) => {
     console.log(`Downloading details for order #${order.id}`);
   };
 
-  const handlePrint = (order: Order) => {
+  const handlePrint = (order) => {
     console.log(`Printing details for order #${order.id}`);
   };
 

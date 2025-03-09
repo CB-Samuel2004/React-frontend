@@ -13,18 +13,9 @@ import {
 } from "@mui/material";
 import { Favorite, ShoppingCart } from "@mui/icons-material";
 
-interface ProductItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string[];  // Updated to match ProductDetails interface
-  specifications?: string;
-  longSpecifications?: string;
-}
-
-const Wish: React.FC = () => {
-  const [wishlist, setWishlist] = useState<ProductItem[]>([]);
-  const [cart, setCart] = useState<ProductItem[]>([]);
+const Wish = () => {
+  const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const savedWishlist = localStorage.getItem("wishlist");
@@ -33,13 +24,15 @@ const Wish: React.FC = () => {
     if (savedCart) setCart(JSON.parse(savedCart));
   }, []);
 
-  const handleRemoveFromWishlist = (productId: number) => {
-    const updatedWishlist = wishlist.filter((product) => product.id !== productId);
+  const handleRemoveFromWishlist = (productId) => {
+    const updatedWishlist = wishlist.filter(
+      (product) => product.id !== productId
+    );
     setWishlist(updatedWishlist);
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
 
-  const handleAddToCart = (product: ProductItem) => {
+  const handleAddToCart = (product) => {
     if (!cart.some((item) => item.id === product.id)) {
       const updatedCart = [...cart, product];
       setCart(updatedCart);
@@ -51,37 +44,44 @@ const Wish: React.FC = () => {
     handleRemoveFromWishlist(product.id);
   };
 
-  const toggleWishlist = (product: ProductItem) => {
+  const toggleWishlist = (product) => {
     if (wishlist.some((item) => item.id === product.id)) {
       handleRemoveFromWishlist(product.id);
     }
   };
 
   return (
-    <Box sx={{ marginTop: "2rem", minHeight: "80vh", backgroundColor: "#f5f5f5", py: 4 }}>
+    <Box
+      sx={{
+        marginTop: "2rem",
+        minHeight: "80vh",
+        backgroundColor: "#f5f5f5",
+        py: 4,
+      }}
+    >
       <Container>
-        <Typography 
-          variant="h4" 
-          gutterBottom 
-          align="center" 
-          sx={{ 
+        <Typography
+          variant="h4"
+          gutterBottom
+          align="center"
+          sx={{
             fontWeight: "bold",
             mb: 4,
-            color: "#1a1a1a"
+            color: "#1a1a1a",
           }}
         >
           My Wishlist
         </Typography>
-        
+
         {wishlist.length === 0 ? (
-          <Paper 
+          <Paper
             sx={{
               boxShadow: "0 0 2px 5px rgba(10, 15, 16, 0.97)",
               borderRadius: "8px",
               padding: "2rem",
               height: "100%",
               textAlign: "center",
-              backgroundColor: "white"
+              backgroundColor: "white",
             }}
           >
             <Typography variant="h6" gutterBottom>
@@ -99,7 +99,7 @@ const Wish: React.FC = () => {
                   backgroundColor: "rgba(0, 0, 0, 0.8)",
                 },
               }}
-              onClick={() => window.location.href = '/store'}
+              onClick={() => (window.location.href = "/store")}
             >
               Continue Shopping
             </Button>
@@ -108,9 +108,9 @@ const Wish: React.FC = () => {
           <Grid container spacing={4}>
             {wishlist.map((product) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                <Card 
-                  sx={{ 
-                    position: "relative", 
+                <Card
+                  sx={{
+                    position: "relative",
                     boxShadow: "0 4px 6px rgba(9, 0, 0, 0.97)",
                     height: "100%",
                     display: "flex",
@@ -140,10 +140,10 @@ const Wish: React.FC = () => {
                   >
                     <Favorite />
                   </IconButton>
-                  
-                  <CardMedia 
-                    component="img" 
-                    height="200" 
+
+                  <CardMedia
+                    component="img"
+                    height="200"
                     image={product.image[0]} // Use first image from array
                     alt={product.title}
                     sx={{
@@ -152,30 +152,37 @@ const Wish: React.FC = () => {
                       backgroundColor: "white",
                     }}
                   />
-                  
-                  <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{ 
+
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
                         fontWeight: "500",
                         fontSize: "1.1rem",
                         lineHeight: 1.3,
-                        mb: 1
+                        mb: 1,
                       }}
                     >
                       {product.title}
                     </Typography>
-                    
-                    <Typography 
-                      variant="h6" 
-                      sx={{ 
+
+                    <Typography
+                      variant="h6"
+                      sx={{
                         color: "#00ff00",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
                       }}
                     >
                       {product.price}
                     </Typography>
-                    
+
                     <Button
                       variant="contained"
                       onClick={() => handleAddToCart(product)}

@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import l5 from "../images/pro.png";
 
-
 const steps = ["Order packed", "Shipped", "Delivery completed"];
 
 const orders = [
@@ -40,7 +39,7 @@ const orders = [
   },
 ];
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const [user, setUser] = useState({
     name: "Sam",
     email: "sam@gmail.com",
@@ -50,7 +49,7 @@ const Profile: React.FC = () => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [activeOrder, setActiveOrder] = useState<string | null>(null);
+  const [activeOrder, setActiveOrder] = useState(null);
 
   const navigate = useNavigate(); // Initialize useNavigate hook
 
@@ -58,7 +57,7 @@ const Profile: React.FC = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
       ...prevUser,
@@ -66,7 +65,7 @@ const Profile: React.FC = () => {
     }));
   };
 
-  const toggleOrderDetails = (orderId: string) => {
+  const toggleOrderDetails = (orderId) => {
     setActiveOrder((prevOrder) => (prevOrder === orderId ? null : orderId));
   };
 
@@ -103,12 +102,11 @@ const Profile: React.FC = () => {
                 fontWeight: "bold",
                 textTransform: "none",
                 backgroundColor: "black",
-                  color: "white",
+                color: "white",
                 "&:hover": {
                   backgroundColor: "white",
                   color: "black",
                   boxShadow: "0 0 2px 5px rgba(6, 6, 6, 0.97)",
-    
                 },
               }}
               onClick={handleEditClick}

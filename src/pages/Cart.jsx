@@ -21,18 +21,9 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-interface ProductItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string[];  // Updated to match ProductDetails interface
-  specifications?: string;
-  longSpecifications?: string;
-}
-
-const Cart: React.FC = () => {
+const Cart = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState<ProductItem[]>([]);
+  const [cart, setCart] = useState([]);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -57,7 +48,7 @@ const Cart: React.FC = () => {
     }
   }, [cart]);
 
-  const handleRemove = (id: number) => {
+  const handleRemove = (id) => {
     const updatedCart = cart.filter((item) => item.id !== id);
     setCart(updatedCart);
   };
@@ -106,7 +97,7 @@ const Cart: React.FC = () => {
     currency: 'INR',
   });
 
-  const handlePaymentMethodChange = (event: any) => {
+  const handlePaymentMethodChange = (event) => {
     setForm({ ...form, paymentMethod: event.target.value });
   };
 

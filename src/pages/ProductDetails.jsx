@@ -9,27 +9,24 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-interface ProductItem {
-  id: number;
-  title: string;
-  price: string;
-  image: string[];  // Changed to match Home component
-  specifications?: string;
-  longSpecifications?: string;
-}
-
-const ProductDetails: React.FC = () => {
+const ProductDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   
-  // Handle case when product is passed with a single string instead of array
-  const product: ProductItem | null = state?.product ? {
+  // Improved product initialization to handle all potential image formats
+  const product = state?.product ? {
     ...state.product,
-    // Ensure image is always an array
-    image: Array.isArray(state.product.image) ? state.product.image : [state.product.image]
+    // Ensure image is always an array by handling all possible cases
+    image: state.product.image ? 
+      (typeof state.product.image === 'string' ? 
+        [state.product.image] : 
+        Array.isArray(state.product.image) ? 
+          state.product.image : 
+          []
+      ) : []
   } : null;
 
-  const [mainImage, setMainImage] = useState<string>("");
+  const [mainImage, setMainImage] = useState("");
 
   // Set main image when product loads or changes
   useEffect(() => {
@@ -62,7 +59,7 @@ const ProductDetails: React.FC = () => {
     );
   }
 
-  const handleThumbnailClick = (image: string) => {
+  const handleThumbnailClick = (image) => {
     setMainImage(image); // Set clicked image as the main image
   };
 
@@ -149,7 +146,7 @@ const ProductDetails: React.FC = () => {
               fullWidth
               onClick={() => {
                 const savedCart = localStorage.getItem("cart");
-                const currentCart: ProductItem[] = savedCart
+                const currentCart = savedCart
                   ? JSON.parse(savedCart)
                   : [];
                 const isAlreadyInCart = currentCart.some(
